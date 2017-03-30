@@ -31,12 +31,17 @@
 
 #include "ChkTeX.h"
 #include "OpSys.h"
+
+/***************************** EMSCRIPTEN REMAPPINGS ************************/
+// We remap all file operations to flow through here. In these functions we
+// translate the filepath in question on the users system to where we need to
+// look in the virtual file system.
 #include <dirent.h>
-// Remap FS operations for the emscripten working dir.
 FILE* jsfopen(const char *restrict filename, const char *restrict mode);
 int jsaccess(const char *path, int amode);
 DIR* jsopendir(const char *dirname);
 struct dirent* jsreaddir(DIR *dirp);
+/***************************** EMSCRIPTEN REMAPPINGS ************************/
 
 /*
  * How many indexes we'll allocate first time

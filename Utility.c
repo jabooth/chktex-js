@@ -64,6 +64,8 @@ struct dirent *jsreaddir(DIR *dirp) {
     snprintf(de->d_name, sizeof(de->d_name), "/working%s", de->d_name);
     return de;
 }
+/***************************** EMSCRIPTEN REMAPPINGS ************************/
+
 
 /***************************** SUPPORT FUNCTIONS ************************/
 
