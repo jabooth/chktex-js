@@ -32,6 +32,8 @@
 #include "ChkTeX.h"
 #include "OpSys.h"
 
+FILE* jsopen(const char *restrict filename, const char *restrict mode);
+
 /*
  * How many indexes we'll allocate first time
  */

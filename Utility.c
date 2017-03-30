@@ -33,6 +33,15 @@
 
 typedef unsigned long HASH_TYPE;
 
+
+
+FILE* jsopen(const char *restrict filename, const char *restrict mode) {
+    const char virtualFilename[512];
+    snprintf(virtualFilename, sizeof(virtualFilename), "/working%s", filename);
+    printf(virtualFilename);
+    return fopen(virtualFilename, mode);
+}
+
 /***************************** SUPPORT FUNCTIONS ************************/
 
 
@@ -88,7 +97,7 @@ int fexists(const char *Filename)
 
     FILE *fh;
 
-    if (fh = fopen(Filename, "r"))
+    if (fh = jsopen(Filename, "r"))
     {
         Retval = TRUE;
         fclose(fh);
