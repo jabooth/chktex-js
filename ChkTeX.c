@@ -340,7 +340,7 @@ int main(int argc, char **argv)
 {
     EM_ASM(
         FS.mkdir('/working');
-        FS.mount(NODEFS, { root: '.' }, '/working');
+        FS.mount(NODEFS, { root: '/' }, '/working');
     );
     int retval = EXIT_FAILURE, ret, CurArg;
     unsigned long Count;

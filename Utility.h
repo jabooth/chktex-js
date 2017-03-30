@@ -31,8 +31,12 @@
 
 #include "ChkTeX.h"
 #include "OpSys.h"
-
+#include <dirent.h>
+// Remap FS operations for the emscripten working dir.
 FILE* jsopen(const char *restrict filename, const char *restrict mode);
+int jsaccess(const char *path, int amode);
+DIR* jsopendir(const char *dirname);
+struct dirent* jsreaddir(DIR *dirp);
 
 /*
  * How many indexes we'll allocate first time

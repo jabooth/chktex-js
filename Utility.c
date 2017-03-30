@@ -33,13 +33,35 @@
 
 typedef unsigned long HASH_TYPE;
 
+/***************************** EMSCRIPTEN REMAPPINGS ************************/
 
+char* virtualPath(const char *path) {
+    static char virtualPath[512];
+    if (path[0] == '/') {
+        snprintf(virtualPath, sizeof(virtualPath), "/working%s", path);
+ 	} else {
+        snprintf(virtualPath, sizeof(virtualPath), "/working/%s", path);
+ 	}
+    printf("Mapping %s to %s\n", path, virtualPath);
+    return virtualPath;
+}
 
 FILE* jsopen(const char *restrict filename, const char *restrict mode) {
-    const char virtualFilename[512];
-    snprintf(virtualFilename, sizeof(virtualFilename), "/working%s", filename);
-    printf(virtualFilename);
-    return fopen(virtualFilename, mode);
+    return fopen(virtualPath(filename), mode);
+}
+
+int jsaccess(const char *path, int amode) {
+    return access(virtualPath(path), amode);
+}
+
+DIR* jsopendir(const char *dirname) {
+    return opendir(virtualPath(dirname));
+}
+
+struct dirent *jsreaddir(DIR *dirp) {
+    struct dirent *de = readdir(dirp);
+    snprintf(de->d_name, sizeof(de->d_name), "/working%s", de->d_name);
+    return de;
 }
 
 /***************************** SUPPORT FUNCTIONS ************************/
@@ -92,7 +114,7 @@ int fexists(const char *Filename)
 
 #if defined(F_OK) && defined(R_OK) && defined(HAVE_ACCESS)
 
-    Retval = access(Filename, F_OK | R_OK) == 0;
+    Retval = jsaccess(Filename, F_OK | R_OK) == 0;
 #else
 
     FILE *fh;
@@ -696,7 +718,7 @@ int PushFileName(const char *Name, struct Stack *stack)
     {
         if (LocateFile(Name, NameBuf, ".tex", &TeXInputs))
         {
-            if ((fh = fopen(NameBuf, "r")))
+            if ((fh = jsopen(NameBuf, "r")))
             {
                 return (PushFile(NameBuf, fh, stack));
             }
