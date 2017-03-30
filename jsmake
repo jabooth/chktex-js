@@ -2,6 +2,7 @@
 make clean
 emmake make
 mv chktex chktex.bc
-emcc -O3 chktex.bc -o chktex.js --pre-js ./pre.js
+# Disable seperate .mem file to keep everything self contained.
+emcc -O3 chktex.bc -o chktex.js --pre-js ./pre.js --memory-init-file 0
 echo "Testing optimised binary"
 node chktex.js --version

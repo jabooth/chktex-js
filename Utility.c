@@ -34,13 +34,14 @@
 typedef unsigned long HASH_TYPE;
 
 /***************************** EMSCRIPTEN REMAPPINGS ************************/
+#include <stdlib.h>
 
 char* virtualPath(const char *path) {
     static char virtualPath[512];
     if (path[0] == '/') {
         snprintf(virtualPath, sizeof(virtualPath), "/working%s", path);
  	} else {
-        snprintf(virtualPath, sizeof(virtualPath), "/working/%s", path);
+        snprintf(virtualPath, sizeof(virtualPath), "/working%s/%s", getenv("CWD"), path);
  	}
     // printf("Mapping %s to %s\n", path, virtualPath);
     return virtualPath;
