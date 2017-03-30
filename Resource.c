@@ -131,7 +131,7 @@ int ReadRC(const char *Filename)
     RsrcLine = 0;
     Expect = FLG_Word | FLG_Eof;
 
-    if ((fh = jsopen(Filename, "r")))
+    if ((fh = jsfopen(Filename, "r")))
     {
         Success = TRUE;
         do

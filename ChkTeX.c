@@ -543,9 +543,9 @@ static int OpenOut(void)
         if (Success)
         {
 #ifdef KPATHSEA
-            if (!(OutputFile = jsopen(OutputName, "wb")))
+            if (!(OutputFile = jsfopen(OutputName, "wb")))
 #else
-            if (!(OutputFile = jsopen(OutputName, "w")))
+            if (!(OutputFile = jsfopen(OutputName, "w")))
 #endif
             {
                 PrintPrgErr(pmOutOpen);

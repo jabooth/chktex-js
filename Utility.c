@@ -47,7 +47,7 @@ char* virtualPath(const char *path) {
     return virtualPath;
 }
 
-FILE* jsopen(const char *restrict filename, const char *restrict mode) {
+FILE* jsfopen(const char *restrict filename, const char *restrict mode) {
     return fopen(virtualPath(filename), mode);
 }
 
@@ -120,7 +120,7 @@ int fexists(const char *Filename)
 
     FILE *fh;
 
-    if (fh = jsopen(Filename, "r"))
+    if (fh = jsfopen(Filename, "r"))
     {
         Retval = TRUE;
         fclose(fh);
@@ -719,7 +719,7 @@ int PushFileName(const char *Name, struct Stack *stack)
     {
         if (LocateFile(Name, NameBuf, ".tex", &TeXInputs))
         {
-            if ((fh = jsopen(NameBuf, "r")))
+            if ((fh = jsfopen(NameBuf, "r")))
             {
                 return (PushFile(NameBuf, fh, stack));
             }
