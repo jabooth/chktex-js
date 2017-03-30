@@ -58,9 +58,9 @@ Compiled with POSIX extended regex support.
 No errors printed; 682 warnings printed; No user suppressed warnings; 498 line suppressed warnings.
 See the manual for how to suppress some or all of these warnings/errors.
 
-real	0m0.402s
-user	0m0.472s
-sys	0m0.056s
+real	0m0.336s
+user	0m0.454s
+sys	0m0.038s
 ```
 vs
 ```
