@@ -8,8 +8,9 @@ stamp-h
 deweb
 Makefile
 ChkTeX.tex
-a.out
-a.out.js
+a.out*
 chktex
 chktex.bc
 chktex.js
+chktex.js.mem
+*.cache

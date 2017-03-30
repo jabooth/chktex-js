@@ -1,4 +1,7 @@
-econfigure ./configure
-emake make
+#! /bin/sh
+emconfigure ./configure  --disable-debug-info --disable-pcre 'CFLAGS=-O3'
+make clean
+emmake make
 mv chktex chktex.bc
-emcc chktex.bc -o chktex.js
+emcc -O3 chktex.bc -o chktex.js
+node chktex.js --version
