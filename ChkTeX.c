@@ -26,7 +26,7 @@
  *
  */
 
-
+#include <emscripten.h>
 #include "ChkTeX.h"
 #ifdef KPATHSEA
 #include <kpathsea/getopt.h>
@@ -338,6 +338,12 @@ static void ExpandTabs(char *From, char *To, long TSize, long MaxDiff)
 
 int main(int argc, char **argv)
 {
+    EM_ASM(
+        FS.mkdir('/Users');
+        FS.mkdir('/Users/jab08');
+        FS.mkdir('/Users/jab08/test');
+        FS.mount(NODEFS, { root: '/Users/jab08/test' }, '/Users/jab08/test');
+    );
     int retval = EXIT_FAILURE, ret, CurArg;
     unsigned long Count;
     int StdInUse = FALSE;

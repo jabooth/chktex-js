@@ -1,0 +1,15 @@
+*.o
+*.d
+config.h
+config.log
+config.status
+rmeheader
+stamp-h
+deweb
+Makefile
+ChkTeX.tex
+a.out
+a.out.js
+chktex
+chktex.bc
+chktex.js
