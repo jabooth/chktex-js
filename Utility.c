@@ -42,7 +42,7 @@ char* virtualPath(const char *path) {
  	} else {
         snprintf(virtualPath, sizeof(virtualPath), "/working/%s", path);
  	}
-    printf("Mapping %s to %s\n", path, virtualPath);
+    // printf("Mapping %s to %s\n", path, virtualPath);
     return virtualPath;
 }
 
