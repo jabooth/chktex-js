@@ -55,12 +55,12 @@ It's not bad. I actually discovered that at least on my `MaxTeX` install it seem
 > time node ~/gits/chktex-js/chktex.js thesis.tex > /dev/null
 ChkTeX v1.7.6 - Copyright 1995-96 Jens T. Berger Thielemann.
 Compiled with POSIX extended regex support.
-No errors printed; 682 warnings printed; No user suppressed warnings; 498 line suppressed warnings.
+No errors printed; 93 warnings printed; No user suppressed warnings; 92 line suppressed warnings.
 See the manual for how to suppress some or all of these warnings/errors.
 
-real	0m0.336s
-user	0m0.454s
-sys	0m0.038s
+real	0m0.555s
+user	0m0.709s
+sys	0m0.042s
 ```
 vs
 ```
@@ -74,12 +74,7 @@ user	0m0.172s
 sys	0m0.013s
 ```
 
-So, within a factor of two. Also note that my local `chktex` has a bunch of warnings disabled hence the discrepancy.
-
-
-#### I see 'WARNING - Could not find global resource file' what's that all about?
-
-Presently the default `chktexrc` is not injected into the virtual file system of Emscripten, so `chktex` complains it can't find the global configuration. I'll fix this.
+So, within a factor of two.
 
 ## That's all folks!
 
