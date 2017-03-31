@@ -7,7 +7,9 @@ if(typeof Module.preRun === "undefined") {
 }
 Module.preRun.push(
     function() {
-        ENV.HOME = require('os').homedir()
+        var os = require('os')
+        ENV.HOME = os.homedir()
         ENV.CWD = require('path').resolve()
+        ENV.PLATFORM = os.platform()
     }
 )

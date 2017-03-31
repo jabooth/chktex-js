@@ -341,6 +341,8 @@ int main(int argc, char **argv)
     EM_ASM(
         FS.mkdir('/mapped');
         FS.mount(NODEFS, { root: '/' }, '/mapped');
+        // To debug what is mounted by Node, check this.
+        // console.log(require('fs').readdirSync('/'));
     );
     int retval = EXIT_FAILURE, ret, CurArg;
     unsigned long Count;

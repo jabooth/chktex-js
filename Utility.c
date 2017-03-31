@@ -36,13 +36,47 @@ typedef unsigned long HASH_TYPE;
 /***************************** EMSCRIPTEN REMAPPINGS ************************/
 #include <stdlib.h>
 
+const int PATH_LEN = 512;
+
+void replaceCharacter(char *str, int len, char a, char b) {
+    for(int i =0; i < len; i++) {
+        if (str[i] == a) {
+            str[i] = b;
+        }
+    }
+}
+
+void convertAbsWinPathToUnix(char *winPath, char* unixPath) {
+    char winDrive[2];
+    snprintf(winDrive, 2, "%s", winPath);
+    replaceCharacter(winPath, PATH_LEN, '\\', '/');
+    // printf("'%s' is an absolute Windows path with drive letter '%s'\n", winPath, winDrive);
+    snprintf(unixPath, PATH_LEN, "/%s/%s", winDrive, winPath + 3);
+    // printf("'%s' is this absolute Windows path converted to UNIX.\n", unixPath);
+}
+
 char* virtualPath(const char *path) {
-    static char virtualPath[512];
-    if (path[0] == '/') {
-        snprintf(virtualPath, sizeof(virtualPath), "/mapped%s", path);
- 	} else {
-        snprintf(virtualPath, sizeof(virtualPath), "/mapped%s/%s", getenv("CWD"), path);
- 	}
+    static char virtualPath[PATH_LEN];
+    // printf("PLATFORM ENV is set to '%s'\n", getenv("PLATFORM"));
+    if (strncmp(getenv("PLATFORM"), "win32", 5) == 0) {
+        char winPath[PATH_LEN];
+        char winPathAsUnix[PATH_LEN];
+        if (path[1] != ':') {
+            // printf("'%s' is a relative Windows path\n", path);
+            snprintf(winPath, PATH_LEN, "%s/%s", getenv("CWD"), path);
+        } else {
+            snprintf(winPath, PATH_LEN, "%s", path);
+        }
+        // printf("'%s' is a absolute Windows path\n", winPath);
+        convertAbsWinPathToUnix(winPath, winPathAsUnix);
+        snprintf(virtualPath, sizeof(virtualPath), "/mapped%s", winPathAsUnix);
+    } else {
+        if (path[0] == '/') {
+            snprintf(virtualPath, sizeof(virtualPath), "/mapped%s", path);
+        } else {
+            snprintf(virtualPath, sizeof(virtualPath), "/mapped%s/%s", getenv("CWD"), path);
+        }
+    }
     // printf("Mapping %s to %s\n", path, virtualPath);
     return virtualPath;
 }
