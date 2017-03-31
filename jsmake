@@ -1,8 +1,23 @@
 #! /bin/sh
+CFLAGS='-03'
+if [ "$1" == "--dev" ]; then
+  echo "Building development version"
+  CFLAGS='-g4'
+fi
+
+echo "---------------------- Cleaning existing artifacts... ----------------------"
 make clean
+rm chktex.bc chktex.js* chktex.data a.out*
+
+trap 'exit' ERR  # From here on out bail on error
+
+echo "\n\n------------------------ 1/2 Invoking emake make... ------------------------"
 emmake make
-mv chktex chktex.bc
+
+echo "\n\n------------------------ 2/2 Invoking emcc... ------------------------------"
 # Disable seperate .mem file to keep everything self contained.
-emcc -O3 chktex.bc -o chktex.js --pre-js ./pre.js --memory-init-file 0 --embed-file chktexrc@/usr/local/etc/
-echo "Testing optimised binary"
+mv chktex chktex.bc
+emcc $CFLAGS chktex.bc -o chktex.js --pre-js ./pre.js --memory-init-file 0 --embed-file chktexrc@/usr/local/etc/
+
+echo "\n\n--------------------- Attempting to run binary ----------------------------"
 node chktex.js --version
