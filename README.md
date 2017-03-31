@@ -2,12 +2,12 @@ ChkTeX-JS
 =========
 
 This is a lightly modified version of ChkTeX 1.7.6 that has been adapted to
-work inside a node environment with
+work inside a Node JS environment with
 [Emscripten](https://github.com/kripken/emscripten).
 
-Building this code produces a single `chktex.js` module that is around `370kb` (`98kb` compressed) that can be used interchangably with `chktex` binaries. By that I mean:
+Building this code produces a single `chktex.js` Node module that is around `457kb` (`111kb` compressed) that can be used interchangeably with `chktex` binaries. By that I mean:
 ```
-> node ./chktex.js -a -flag -or -two ./some/tex/file.tex
+> ./chktex.js -a -flag -or -two ./some/tex/file.tex
 ```
 should perform identically to:
 ```
@@ -18,17 +18,14 @@ If you find anything where this isn't true - it's a bug, please open an issue.
 ### Prerequisites
 
 - [Emscripten SDK](https://kripken.github.io/emscripten-site/docs/getting_started/downloads.html)
-- `make`/`autoconf` etc
-- A LaTeX install (for now). This is only used to build the docs as far as I can tell, so we can remove this restriction fairly easily.
 
 ### Building
 
-To build a node module with performance optimisations enabled:
+To build a release version of `chktex.js` just run
 ```
-> ./jsconfigure
-> ./jsmake
+> ./build.sh
 ```
-That's it.
+See the top of this script for more info (including how to make debug builds) if you run into issues.
 
 ## FAQ
 
@@ -36,10 +33,9 @@ That's it.
 
 Well firstly it was a fun way to learn emscripten. :)
 
-Secondly I'm a contributor to the [LaTeX Workshop VS Code extension](https://github.com/James-Yu/LaTeX-Workshop) which includes rich ChkTeX support. This is an experiment to see if it would be possible to provide hassle-free LaTeX linting to all users of our plugin without them having to have a particular `chktex` binary installed. There's a number of benefits to this:
-- We can offer a consistent experience across platforms by using a bundled `.js` linter
-- We know the user has the latest version of `chktex`
-- We can potentailly be a little more nimble in fixing minor bugs in chktex quickly (although of course we would rather go [upstream](http://www.nongnu.org/chktex/)!)
+Secondly I'm a contributor to the [LaTeX Workshop VS Code extension](https://github.com/James-Yu/LaTeX-Workshop) which includes rich ChkTeX support. This is an experiment to see if it would be possible to provide hassle-free LaTeX linting to all users by aiding them to install a version of `chktex` on their system if they don't already have it installed. There's a number of benefits to this:
+- We can offer a consistent experience across platforms by helping users to download a binary of chktex onto their system where we know it's up to date and works the same across platforms
+- We can potentially be a little more nimble in fixing minor bugs in chktex quickly (although of course we would rather go [upstream](http://www.nongnu.org/chktex/)!)
 
 
 ### Can this be used in the browser?

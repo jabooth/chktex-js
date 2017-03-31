@@ -1,4 +1,7 @@
 #! /bin/sh
+# if ./build.sh doesn't work for you for some reason
+# run this to actually let Emscripten run the ./configure script
+# to make a Makefile...
 EXTRA_CONFIG_ARGS='CFLAGS=-O3'
 if [ "$1" == "--dev" ]; then
   echo "Building development version"
