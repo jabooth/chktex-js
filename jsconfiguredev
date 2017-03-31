@@ -1,2 +1,2 @@
 #! /bin/sh
-emconfigure ./configure  --disable-debug-info --disable-pcre
+emconfigure ./configure  --disable-debug-info --disable-pcre 'CFLAGS=-g'

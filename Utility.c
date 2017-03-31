@@ -64,6 +64,29 @@ struct dirent *jsreaddir(DIR *dirp) {
     snprintf(de->d_name, sizeof(de->d_name), "/working%s", de->d_name);
     return de;
 }
+
+int unmapped_fexists(const char *Filename)
+{
+    int Retval;
+
+#if defined(F_OK) && defined(R_OK) && defined(HAVE_ACCESS)
+
+    Retval = access(Filename, F_OK | R_OK) == 0;
+#else
+
+    FILE *fh;
+
+    if (fh = fopen(Filename, "r"))
+    {
+        Retval = TRUE;
+        fclose(fh);
+    }
+    else
+        Retval = FALSE;
+#endif
+
+    return (Retval);
+}
 /***************************** EMSCRIPTEN REMAPPINGS ************************/
 
 

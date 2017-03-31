@@ -259,8 +259,9 @@ int SetupVars(void)
             if (!FoundFile)
                 PrintPrgErr(pmNoRsrc);
         }
-
-        if (*ConfigFile && fexists(ConfigFile))
+        // JS: Check first the virtual file system them the mounted filesystem
+        // for this file.
+        if (*ConfigFile && (unmapped_fexists(ConfigFile) || fexists(ConfigFile)))
             break;
     }
     FoundFile |= *ConfigFile;

@@ -41,6 +41,7 @@ FILE* jsfopen(const char *restrict filename, const char *restrict mode);
 int jsaccess(const char *path, int amode);
 DIR* jsopendir(const char *dirname);
 struct dirent* jsreaddir(DIR *dirp);
+int unmapped_fexists(const char *Filename);
 /***************************** EMSCRIPTEN REMAPPINGS ************************/
 
 /*

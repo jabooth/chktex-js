@@ -3,6 +3,6 @@ make clean
 emmake make
 mv chktex chktex.bc
 # Disable seperate .mem file to keep everything self contained.
-emcc chktex.bc -o chktex.js --pre-js ./pre.js --memory-init-file 0
+emcc -g4 chktex.bc -o chktex.js --pre-js ./pre.js --memory-init-file 0 --embed-file chktexrc@/usr/local/etc/
 echo "Testing Development Binary"
 node chktex.js --version

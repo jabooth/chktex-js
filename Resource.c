@@ -131,7 +131,15 @@ int ReadRC(const char *Filename)
     RsrcLine = 0;
     Expect = FLG_Word | FLG_Eof;
 
-    if ((fh = jsfopen(Filename, "r")))
+    // printf("About to open config at %s\n", Filename);
+    // try opening in the virtual filesystem at this location first
+    fh = fopen(Filename, "r");
+    if (!fh) {
+        // printf("Didn't find config at %s\n", Filename);
+        // Can't find config in the virtual FS (/), check the mapped (users) FS...
+        fh = jsfopen(Filename, "r");
+    }
+    if (fh)
     {
         Success = TRUE;
         do

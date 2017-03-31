@@ -12,5 +12,6 @@ a.out*
 chktex
 chktex.bc
 chktex.js
-chktex.js.mem
+chktex.js.*
+chktex.data
 *.cache
