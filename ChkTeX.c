@@ -339,8 +339,8 @@ static void ExpandTabs(char *From, char *To, long TSize, long MaxDiff)
 int main(int argc, char **argv)
 {
     EM_ASM(
-        FS.mkdir('/working');
-        FS.mount(NODEFS, { root: '/' }, '/working');
+        FS.mkdir('/mapped');
+        FS.mount(NODEFS, { root: '/' }, '/mapped');
     );
     int retval = EXIT_FAILURE, ret, CurArg;
     unsigned long Count;
@@ -543,9 +543,9 @@ static int OpenOut(void)
         if (Success)
         {
 #ifdef KPATHSEA
-            if (!(OutputFile = jsfopen(OutputName, "wb")))
+            if (!(OutputFile = mapped_fopen(OutputName, "wb")))
 #else
-            if (!(OutputFile = jsfopen(OutputName, "w")))
+            if (!(OutputFile = mapped_fopen(OutputName, "w")))
 #endif
             {
                 PrintPrgErr(pmOutOpen);

@@ -33,14 +33,26 @@
 #include "OpSys.h"
 
 /***************************** EMSCRIPTEN REMAPPINGS ************************/
-// We remap all file operations to flow through here. In these functions we
-// translate the filepath in question on the users system to where we need to
-// look in the virtual file system.
+// Code running in Emscripten always sees a virtual UNIX filesystem root (/).
+//
+// We mount the user's FS (/) at /mapped in this virtual FS, so to access a 
+// file at
+//     /Users/jab08/test.tex
+// we need to redirect that operation to
+//    /mapped/Users/jab08/test.tex
+//
+// Here we define small wrappers for the file access functions used in ChkTeX. 
+// Throughout ChkTeX we re-route calls from foo(...) to mapped_foo(...)
+// so as to transparently handle this FS mapping.
 #include <dirent.h>
-FILE* jsfopen(const char *restrict filename, const char *restrict mode);
-int jsaccess(const char *path, int amode);
-DIR* jsopendir(const char *dirname);
-struct dirent* jsreaddir(DIR *dirp);
+FILE* mapped_fopen(const char *restrict filename, const char *restrict mode);
+int mapped_access(const char *path, int amode);
+DIR* mapped_opendir(const char *dirname);
+struct dirent* mapped_readdir(DIR *dirp);
+// The one file we *do* embed in the virtual FS is the default chktexrc.
+// As fexists(...) (defined below here in Utility.h) is updated to call our 
+// new mapped functions, we need an unmodified variant of that function that
+// we can use to find if files exist in / not /mapped/
 int unmapped_fexists(const char *Filename);
 /***************************** EMSCRIPTEN REMAPPINGS ************************/
 

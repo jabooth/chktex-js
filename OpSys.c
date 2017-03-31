@@ -465,9 +465,9 @@ static int SearchFile(char *Dir, const char *Filename, const char *App)
     {
         if ((statbuf = malloc(sizeof(struct stat))))
         {
-            if ((dh = jsopendir(Dir)))
+            if ((dh = mapped_opendir(Dir)))
             {
-                while (!Found && (de = jsreaddir(dh)))
+                while (!Found && (de = mapped_readdir(dh)))
                 {
                     Dir[DirLen] = 0;
                     if (strcmp(de->d_name, ".") && strcmp(de->d_name, ".."))

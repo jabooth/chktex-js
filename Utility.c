@@ -39,29 +39,29 @@ typedef unsigned long HASH_TYPE;
 char* virtualPath(const char *path) {
     static char virtualPath[512];
     if (path[0] == '/') {
-        snprintf(virtualPath, sizeof(virtualPath), "/working%s", path);
+        snprintf(virtualPath, sizeof(virtualPath), "/mapped%s", path);
  	} else {
-        snprintf(virtualPath, sizeof(virtualPath), "/working%s/%s", getenv("CWD"), path);
+        snprintf(virtualPath, sizeof(virtualPath), "/mapped%s/%s", getenv("CWD"), path);
  	}
     // printf("Mapping %s to %s\n", path, virtualPath);
     return virtualPath;
 }
 
-FILE* jsfopen(const char *restrict filename, const char *restrict mode) {
+FILE* mapped_fopen(const char *restrict filename, const char *restrict mode) {
     return fopen(virtualPath(filename), mode);
 }
 
-int jsaccess(const char *path, int amode) {
+int mapped_access(const char *path, int amode) {
     return access(virtualPath(path), amode);
 }
 
-DIR* jsopendir(const char *dirname) {
+DIR* mapped_opendir(const char *dirname) {
     return opendir(virtualPath(dirname));
 }
 
-struct dirent *jsreaddir(DIR *dirp) {
+struct dirent *mapped_readdir(DIR *dirp) {
     struct dirent *de = readdir(dirp);
-    snprintf(de->d_name, sizeof(de->d_name), "/working%s", de->d_name);
+    snprintf(de->d_name, sizeof(de->d_name), "/mapped%s", de->d_name);
     return de;
 }
 
@@ -140,12 +140,12 @@ int fexists(const char *Filename)
 
 #if defined(F_OK) && defined(R_OK) && defined(HAVE_ACCESS)
 
-    Retval = jsaccess(Filename, F_OK | R_OK) == 0;
+    Retval = mapped_access(Filename, F_OK | R_OK) == 0;
 #else
 
     FILE *fh;
 
-    if (fh = jsfopen(Filename, "r"))
+    if (fh = mapped_fopen(Filename, "r"))
     {
         Retval = TRUE;
         fclose(fh);
@@ -744,7 +744,7 @@ int PushFileName(const char *Name, struct Stack *stack)
     {
         if (LocateFile(Name, NameBuf, ".tex", &TeXInputs))
         {
-            if ((fh = jsfopen(NameBuf, "r")))
+            if ((fh = mapped_fopen(NameBuf, "r")))
             {
                 return (PushFile(NameBuf, fh, stack));
             }

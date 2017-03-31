@@ -137,7 +137,7 @@ int ReadRC(const char *Filename)
     if (!fh) {
         // printf("Didn't find config at %s\n", Filename);
         // Can't find config in the virtual FS (/), check the mapped (users) FS...
-        fh = jsfopen(Filename, "r");
+        fh = mapped_fopen(Filename, "r");
     }
     if (fh)
     {
