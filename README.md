@@ -33,14 +33,11 @@ See the top of this script for more info (including how to make debug builds) if
 
 Well firstly it was a fun way to learn emscripten. :)
 
-Secondly I'm a contributor to the [LaTeX Workshop VS Code extension](https://github.com/James-Yu/LaTeX-Workshop) which includes rich ChkTeX support. This is an experiment to see if it would be possible to provide hassle-free LaTeX linting to all users by aiding them to install a version of `chktex` on their system if they don't already have it installed. There's a number of benefits to this:
-- We can offer a consistent experience across platforms by helping users to download a binary of chktex onto their system where we know it's up to date and works the same across platforms
-- We can potentially be a little more nimble in fixing minor bugs in chktex quickly (although of course we would rather go [upstream](http://www.nongnu.org/chktex/)!)
-
+Secondly I'm a contributor to the [LaTeX Workshop VS Code extension](https://github.com/James-Yu/LaTeX-Workshop) which includes rich ChkTeX support. This is an experiment to see if it would be possible to provide hassle-free LaTeX linting to all users by aiding them to install a version of `chktex` on their system if they don't already have it installed. This has the benefit that we can offer a consistent experience across platforms by helping users to download a 'binary' of chktex onto their system where we know it's up to date and works the same across platforms.
 
 ### Can this be used in the browser?
 
-Presently, no. For now I mapped through the FS access explictly for Node - this means we can offer a drop-in replacement for the existing `chktex` binary. For instance, by default `chktex` will follow other latex files included with `\input{}` and lint those also. This means `chktex` needs to call `fopen` of it's own valition and have something happen, which ain't happening in the browser sandbox.
+Presently, no. For now I mapped through the FS access explicitly for Node (see [Utility.h](https://github.com/jabooth/chktex-js/blob/master/Utility.h#L35) for details). This means we can offer a drop-in replacement for the existing `chktex` binary. For instance, by default `chktex` will follow other latex files included with `\input{}` and lint those also. This means `chktex` needs to call `fopen` of it's own valition and have something happen, which ain't happening in the browser sandbox.
 
 However, `chktex` can be given input on `stdin` for a single file and you can disable following to other files with `-I0`. It would only be an hour or two's work to take this and get it working in the browser, and least for linting one file at a time.
 
